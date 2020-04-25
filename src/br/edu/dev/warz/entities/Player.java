@@ -16,7 +16,7 @@ public class Player extends Entity {
     public boolean right, up, left, down;
     public int rightDir = 0, leftDir = 1;
     public int dir = rightDir;
-    public double speed = 0.7;
+    public double speed = 1.5;
     private int frames = 0;
     private int maxFrames = 5;
     private int index = 0;
@@ -24,6 +24,7 @@ public class Player extends Entity {
     private boolean moved;
     private BufferedImage[] rightPlayer;
     private BufferedImage[] leftPlayer;
+    public int life = 100;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -39,24 +40,24 @@ public class Player extends Entity {
     }
 
     public boolean placeFree(int par, int y1) {
-        return World.isFree(par,  y1);
+        return World.isFree(par, y1);
     }
 
     @Override
     public void tick() {
         moved = false;
-        if (right && placeFree((int)(x + speed), this.getY())) {
+        if (right && placeFree((int) (x + speed), this.getY())) {
             moved = true;
             dir = rightDir;
             x += speed;
-        } else if (left && placeFree((int)(x - speed), this.getY())) {
+        } else if (left && placeFree((int) (x - speed), this.getY())) {
             moved = true;
             dir = leftDir;
             x -= speed;
         } else if (down && placeFree(this.getX(), (int) (y + speed))) {
             moved = true;
             y += speed;
-        } else if (up && placeFree(this.getX(),(int) (y - speed))) {
+        } else if (up && placeFree(this.getX(), (int) (y - speed))) {
             moved = true;
             y -= speed;
         }

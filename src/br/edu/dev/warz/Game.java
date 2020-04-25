@@ -1,5 +1,6 @@
 package br.edu.dev.warz;
 
+import br.edu.dev.warz.entities.Enemy;
 import br.edu.dev.warz.entities.Entity;
 import br.edu.dev.warz.entities.Player;
 import br.edu.dev.warz.graficos.Spritesheet;
@@ -15,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.swing.*;
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -30,14 +32,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Spritesheet spritesheet;
     public static Player player;
     public static List<Entity> entities;
+    public static List<Enemy> enemyies;
     public static World world;
+    public static Random rand;
 
     public Game() {
+        rand = new Random();
         addKeyListener(this);
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<>();
+        enemyies = new ArrayList<>();
         spritesheet = new Spritesheet("/img/spritesheet.png");
         player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entities.add(player);
@@ -118,6 +124,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         double delta = 0;
         int fps = 0;
         double timer = System.currentTimeMillis();
+        requestFocus();
         while (isRunning) {
             long now = System.nanoTime();
             delta += (now - lessTime) / ns;
