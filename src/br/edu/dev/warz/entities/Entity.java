@@ -1,6 +1,7 @@
 package br.edu.dev.warz.entities;
 
 import br.edu.dev.warz.Game;
+import br.edu.dev.warz.world.Camera;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -71,6 +72,6 @@ public class Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(sprite, (int) x, (int) y, null);
+        g.drawImage(sprite, (int) x - Camera.x, (int) y - Camera.y, null);
     }
 }

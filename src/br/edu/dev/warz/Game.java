@@ -20,9 +20,9 @@ import javax.swing.*;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     private static JFrame frame;
-    private static final int WIDTH = 320;
-    private static final int HEIGHT = 320;
-    private static final int SCALE = 2;
+    public static final int WIDTH = 190;
+    public static final int HEIGHT = 160;
+    private static final int SCALE = 3;
     private static final long serialVersionUID = 1L;
     private boolean isRunning;
     private Thread thread;
@@ -60,7 +60,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void initFrame() {
-        frame = new JFrame("Zelda");
+        frame = new JFrame("War Zombie");
         frame.add(this);
         frame.setResizable(false);
         frame.pack();
