@@ -60,7 +60,9 @@ public class World {
                             Game.entities.add(new Weapon(xx * 16, yy * 16, 16, 16, Entity.WEAPON_EN));
                             break;
                         case 0xFFFF006E: // LifePack
-                            Game.entities.add(new LifePack(xx * 16, yy * 16, 16, 16, Entity.LIFEPACK_EN));
+                            LifePack lifePack = new LifePack(xx * 16, yy * 16, 16, 16, Entity.LIFEPACK_EN);
+                            lifePack.setMask(8, 8, 8, 8);
+                            Game.entities.add(lifePack);
                             break;
                         case 0xFFFFFF00: // Bullet
                             Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));

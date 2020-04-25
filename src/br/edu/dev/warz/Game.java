@@ -4,6 +4,7 @@ import br.edu.dev.warz.entities.Enemy;
 import br.edu.dev.warz.entities.Entity;
 import br.edu.dev.warz.entities.Player;
 import br.edu.dev.warz.graficos.Spritesheet;
+import br.edu.dev.warz.graficos.UI;
 import br.edu.dev.warz.world.World;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -22,9 +23,9 @@ import javax.swing.*;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     private static JFrame frame;
-    public static final int WIDTH = 190;
+    public static final int WIDTH = 240;
     public static final int HEIGHT = 160;
-    private static final int SCALE = 3;
+    public static final int SCALE = 3;
     private static final long serialVersionUID = 1L;
     private boolean isRunning;
     private Thread thread;
@@ -35,6 +36,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static List<Enemy> enemyies;
     public static World world;
     public static Random rand;
+    public UI ui;
 
     public Game() {
         rand = new Random();
@@ -42,6 +44,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        startGame();
+        ui = new UI();
+    }
+    
+    public static void startGame(){
         entities = new ArrayList<>();
         enemyies = new ArrayList<>();
         spritesheet = new Spritesheet("/img/spritesheet.png");
@@ -81,9 +88,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        entities.forEach((entity) -> {
-            entity.tick();
-        });
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).tick();
+        }
     }
 
     public void render() {
@@ -103,18 +110,31 @@ public class Game extends Canvas implements Runnable, KeyListener {
         for (Entity entity : entities) {
             entity.render(graphics);
         }
-        graphics.setColor(color);
-        graphics.setFont(new Font("Arial", Font.PLAIN, 9));
-        graphics.drawString("FPS:" + fpsExibicao, 2, 10);
+
+        ui.render(graphics);
 
         graphics.dispose();
         graphics = bs.getDrawGraphics();
         graphics.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+        drawFps(graphics);
+        drawAmmo(graphics);
         bs.show();
     }
 
     private int fpsExibicao = 0;
     private Color color = Color.YELLOW;
+
+    private void drawAmmo(Graphics g) {
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.drawString("Munição: " + player.ammo, 10, 40);
+    }
+
+    private void drawFps(Graphics g) {
+        g.setColor(color);
+        g.setFont(new Font("Arial", Font.PLAIN, 15));
+        g.drawString("FPS:" + fpsExibicao, (WIDTH * SCALE) - 50, 15);
+    }
 
     @Override
     public void run() {
