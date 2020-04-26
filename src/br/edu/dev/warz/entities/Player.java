@@ -30,7 +30,9 @@ public class Player extends Entity {
     public BufferedImage playerDamage;
     public boolean isDamage = false;
     private int damageFrames = 0;
+    private int shootFrames = 16;
     private boolean hasGun = false;
+    public boolean isShoot = false;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -87,6 +89,29 @@ public class Player extends Entity {
                 isDamage = false;
             }
         }
+        this.shootFrames++;
+
+        if (isShoot) {
+            isShoot = false;
+            if (hasGun && ammo > 0) {
+                if (this.shootFrames >= 16) {
+                    this.shootFrames = 0;
+                    ammo--;
+                    int px;
+                    int py = this.getY() + 7;
+                    int dx;
+                    if (dir == rightDir) {
+                        dx = 1;
+                        px = this.getX() + 16;
+                    } else {
+                        dx = -1;
+                        px = this.getX() - 6;
+                    }
+                    BulletShoot bulletShoot = new BulletShoot(px, py, 3, 3, sprite, dx, 0);
+                    Game.bullets.add(bulletShoot);
+                }
+            }
+        }
 
         if (Game.player.life <= 0) {
             Game.startGame();
@@ -124,19 +149,20 @@ public class Player extends Entity {
             Entity atual = Game.entities.get(i);
             if (atual instanceof Bullet) {
                 if (Entity.isColidding(this, atual)) {
-                    ammo++;
+                    ammo += 5;
                     Game.entities.remove(atual);
                 }
             }
         }
     }
-    
+
     public void checkCollisionWithGun() {
         for (int i = 0; i < Game.entities.size(); i++) {
             Entity atual = Game.entities.get(i);
             if (atual instanceof Weapon) {
                 if (Entity.isColidding(this, atual)) {
                     hasGun = true;
+                    isShoot = false;
                     Game.entities.remove(atual);
                 }
             }

@@ -1,5 +1,6 @@
 package br.edu.dev.warz;
 
+import br.edu.dev.warz.entities.BulletShoot;
 import br.edu.dev.warz.entities.Enemy;
 import br.edu.dev.warz.entities.Entity;
 import br.edu.dev.warz.entities.Player;
@@ -34,6 +35,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Player player;
     public static List<Entity> entities;
     public static List<Enemy> enemyies;
+    public static List<BulletShoot> bullets;
     public static World world;
     public static Random rand;
     public UI ui;
@@ -47,10 +49,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         startGame();
         ui = new UI();
     }
-    
-    public static void startGame(){
+
+    public static void startGame() {
         entities = new ArrayList<>();
         enemyies = new ArrayList<>();
+        bullets = new ArrayList<>();
         spritesheet = new Spritesheet("/img/spritesheet.png");
         player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entities.add(player);
@@ -91,6 +94,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).tick();
         }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).tick();
+        }
     }
 
     public void render() {
@@ -109,6 +116,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         world.render(graphics);
         for (Entity entity : entities) {
             entity.render(graphics);
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).render(graphics);
         }
 
         ui.render(graphics);
@@ -187,6 +198,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 || e.getKeyCode() == KeyEvent.VK_S) {
             player.down = true;
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            player.isShoot = true;
+        }
     }
 
     @Override
@@ -206,5 +221,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 || e.getKeyCode() == KeyEvent.VK_S) {
             player.down = false;
         }
+//
+//        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+//            player.isShoot = false;
+//        }
     }
 }

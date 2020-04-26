@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class Enemy extends Entity {
 
-    private double speed = 0.5;
+    private double speed = 1;
     private boolean canSee = false;
     private static final int VISAO = 50;
 
@@ -54,8 +54,8 @@ public class Enemy extends Entity {
                 y -= speed;
             }
         } else {
-            if (Game.rand.nextInt(100) < 10) {
-                Game.player.life -= Game.rand.nextInt(3);
+            if (Game.rand.nextInt(100) < 5) {
+                Game.player.life -= 5 + Game.rand.nextInt(10);
                 Game.player.isDamage = true;
             }
         }
