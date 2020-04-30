@@ -38,6 +38,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static List<BulletShoot> bullets;
     public static World world;
     public static Random rand;
+    private static int CUR_LEVEl = 2;
+    private static final int MAX_LEVEL = 2;
     public UI ui;
 
     public Game() {
@@ -46,18 +48,23 @@ public class Game extends Canvas implements Runnable, KeyListener {
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        startGame();
+        startGame("level" + CUR_LEVEl + ".png");
         ui = new UI();
     }
+    
+    public static void restart(){
+        CUR_LEVEl = 1;
+        startGame("level" + CUR_LEVEl + ".png");
+    }
 
-    public static void startGame() {
+    public static void startGame(String level) {
         entities = new ArrayList<>();
         enemyies = new ArrayList<>();
         bullets = new ArrayList<>();
         spritesheet = new Spritesheet("/img/spritesheet.png");
         player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entities.add(player);
-        world = new World("/img/map.png");
+        world = new World("/img/" + level);
     }
 
     public synchronized void start() {
@@ -97,6 +104,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).tick();
+        }
+        
+        if (enemyies.isEmpty()) {
+            CUR_LEVEl++;
+            if (CUR_LEVEl > MAX_LEVEL) {
+                CUR_LEVEl = 1;
+            }
+            String newWorld = "level" + CUR_LEVEl + ".png";
+            startGame(newWorld);
         }
     }
 

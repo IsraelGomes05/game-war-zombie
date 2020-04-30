@@ -114,7 +114,7 @@ public class Player extends Entity {
         }
 
         if (Game.player.life <= 0) {
-            Game.startGame();
+            Game.restart();
         }
 
         checkCollisionWithLifePack();
